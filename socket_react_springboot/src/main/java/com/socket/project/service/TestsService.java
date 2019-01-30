@@ -1,9 +1,13 @@
 package com.socket.project.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import com.socket.project.domain.test.TestsMainResponseDto;
 import com.socket.project.domain.test.TestsRepository;
 import com.socket.project.domain.test.TestsSaveRequestDto;
 
@@ -21,5 +25,15 @@ public class TestsService {
 	@Transactional
 	public Long save(TestsSaveRequestDto dto) {
 		return testsRepository.save(dto.toEntity()).getId();
+	}
+	// .map(TestsMainResponseDto::new)는 실제로는
+	// .map(tests -> new TestsMainResponseDto(tests)) 와 같다.
+	// repository 결과로 넘어온 Tests의 Stream 을 map 을 통해
+	// TestsMainResponseDto 로 변환 -> Lists 로 반환하는 메소드
+	@Transactional
+	public List<TestsMainResponseDto> findAllDesc(){
+		return testsRepository.findAllDesc()
+				.map(TestsMainResponseDto::new)
+				.collect(Collectors.toList());
 	}
 }

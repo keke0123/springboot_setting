@@ -22,7 +22,7 @@ public class TestsSaveRequestDto {
 
 	@Builder
 	public TestsSaveRequestDto(String title, String content, String author) {
-		super();
+		//super();
 		this.title = title;
 		this.content = content;
 		this.author = author;

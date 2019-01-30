@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.socket.project.domain.test.TestsRepository;
 import com.socket.project.domain.test.TestsSaveRequestDto;
 import com.socket.project.service.TestsService;
 
@@ -37,13 +36,19 @@ public class TestController {
 	// body / raw / JSON
 	// {"title":"테스트 타이틀","content":"테스트 본문","author":"테스터"}
 	@PostMapping("/test")
-	public void saveTests(@RequestBody TestsSaveRequestDto dto) {
+	public TestsSaveRequestDto saveTests(@RequestBody TestsSaveRequestDto dto) {
+		System.out.println(dto.getTitle());
+		System.out.println(dto.getAuthor());
+		System.out.println(dto.getContent());
 		testsService.save(dto);
+		return dto;
 		//testsRepository.save(dto.toEntity());
 	}
 	@GetMapping("/main")
-	public ModelAndView main() {
-		return new ModelAndView("main");
+	public ModelAndView main(ModelAndView mView) {
+		mView.setViewName("main");
+		mView.addObject("posts", testsService.findAllDesc());
+		return mView;
 	}
 	
 }
